@@ -88,7 +88,7 @@
             const code = urlParams.get('code');
             const state = urlParams.get('state');
             const error = urlParams.get('error');
-            const redirect_url = urlParams.get('redirect_url');
+            const redirect_url = urlParams.get('redirect_url') || 'instacaptions://callback';
 
             const messageElem = document.getElementById('messageText');
             const statusElem = document.getElementById('statusText');
@@ -107,7 +107,7 @@
                 return;
             }
 
-            if (!code || !state || !redirect_url) {
+            if (!code || !state) {
                 messageElem.textContent = "Invalid redirect parameters";
                 statusElem.textContent = "Missing required parameters";
                 statusElem.classList.add("visible");
@@ -120,6 +120,12 @@
 
             // Construct the final redirect URL with authorization code and state
             const finalRedirectUrl = `${redirect_url}?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
+
+            console.log("Final redirect URL:", finalRedirectUrl);
+
+            // Show detailed status
+            statusElem.innerHTML = `Redirecting to app in 0.5 seconds...<br><span class='code'>${finalRedirectUrl.substring(0, 30)}...</span>`;
+            statusElem.classList.add("visible");
 
             // Set up the manual button just in case auto-redirect fails
             redirectButton.setAttribute('href', finalRedirectUrl);

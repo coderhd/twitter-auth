@@ -52,17 +52,19 @@
             const code = urlParams.get('code');
             const state = urlParams.get('state');
 
+            console.log('twitter::', { urlParams, redirectUrl, code, state });
+
             if (redirectUrl && code && state) {
                 const finalRedirectUrl = `${redirectUrl}?code=${code}&state=${state}`;
                 document.getElementById('redirect-link').setAttribute('href', finalRedirectUrl);
             }
 
             // Auto-redirect after 1 second
-            setTimeout(function () {
-                if (redirectUrl && code && state) {
-                    window.location.href = `${redirectUrl}?code=${code}&state=${state}`;
-                }
-            }, 1000);
+            // setTimeout(function () {
+            //     if (redirectUrl && code && state) {
+            //         window.location.href = `${redirectUrl}?code=${code}&state=${state}`;
+            //     }
+            // }, 1000);
         });
     </script>
 </body>

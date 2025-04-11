@@ -98,6 +98,19 @@
             document.getElementById('message').innerText = message;
         }
 
+        // Parse query parameters without relying on URLSearchParams
+        function parseQueryString(queryString) {
+            const params = {};
+            const queries = queryString.split("&");
+
+            for (let i = 0; i < queries.length; i++) {
+                const pair = queries[i].split('=');
+                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+            }
+
+            return params;
+        }
+
         // Main function to handle the redirect
         function handleRedirect() {
             log('Starting Twitter OAuth redirect handler...');
@@ -108,13 +121,17 @@
                 log(`Current URL: ${currentUrl}`);
 
                 // Extract query parameters from the URL
-                const urlParams = new URLSearchParams(window.location.search);
+                const queryString = window.location.search.substring(1);
+                log(`Query string: ${queryString}`);
+
+                // Parse query parameters manually to avoid URLSearchParams
+                const params = parseQueryString(queryString);
 
                 // Get the important parameters
-                const code = urlParams.get('code');
-                const state = urlParams.get('state');
-                const error = urlParams.get('error');
-                const redirectUrl = urlParams.get('redirect_url');
+                const code = params.code;
+                const state = params.state;
+                const error = params.error;
+                const redirectUrl = params.redirect_url;
 
                 log(`Code: ${code ? `${code.substr(0, 10)}...` : 'null'}`);
                 log(`State: ${state ? state.substr(0, 10) + '...' : 'null'}`);

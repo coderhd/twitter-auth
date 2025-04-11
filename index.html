@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Twitter OAuth Redirect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f5f8fa;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #1DA1F2;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #1DA1F2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Twitter Authentication</h2>
+        <p>Authentication successful!</p>
+        <p>You can now return to the app.</p>
+        <a href="#" id="redirect-link" class="button">Click to return to the app</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect_url');
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+
+            if (redirectUrl && code && state) {
+                const finalRedirectUrl = `${redirectUrl}?code=${code}&state=${state}`;
+                document.getElementById('redirect-link').setAttribute('href', finalRedirectUrl);
+            }
+
+            // Auto-redirect after 1 second
+            setTimeout(function () {
+                if (redirectUrl && code && state) {
+                    window.location.href = `${redirectUrl}?code=${code}&state=${state}`;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>
